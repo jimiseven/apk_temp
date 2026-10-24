@@ -1,0 +1,16 @@
+R_DEF: Internal format may change without notice
+local
+color dark_background
+color dark_surface
+color dark_surface_variant
+color orange_accent
+color orange_container
+color orange_primary
+color orange_secondary
+color text_primary
+color text_secondary
+string accessibility_service_description
+string app_name
+style Theme.QuickTimer
+style Theme.QuickTimer.Floating
+xml accessibility_service_config

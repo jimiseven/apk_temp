@@ -1,0 +1,230 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="com.quicktimer.app"
+4    android:versionCode="1"
+5    android:versionName="1.0" >
+6
+7    <uses-sdk
+8        android:minSdkVersion="26"
+9        android:targetSdkVersion="34" />
+10
+11    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+11-->G:\0 imports\apk\repo\apk_temp\app\src\main\AndroidManifest.xml:5:5-77
+11-->G:\0 imports\apk\repo\apk_temp\app\src\main\AndroidManifest.xml:5:22-74
+12    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE" />
+12-->G:\0 imports\apk\repo\apk_temp\app\src\main\AndroidManifest.xml:6:5-89
+12-->G:\0 imports\apk\repo\apk_temp\app\src\main\AndroidManifest.xml:6:22-86
+13    <uses-permission android:name="android.permission.WAKE_LOCK" />
+13-->G:\0 imports\apk\repo\apk_temp\app\src\main\AndroidManifest.xml:7:5-68
+13-->G:\0 imports\apk\repo\apk_temp\app\src\main\AndroidManifest.xml:7:22-65
+14    <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
+14-->G:\0 imports\apk\repo\apk_temp\app\src\main\AndroidManifest.xml:8:5-75
+14-->G:\0 imports\apk\repo\apk_temp\app\src\main\AndroidManifest.xml:8:22-72
+15    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+15-->G:\0 imports\apk\repo\apk_temp\app\src\main\AndroidManifest.xml:9:5-77
+15-->G:\0 imports\apk\repo\apk_temp\app\src\main\AndroidManifest.xml:9:22-74
+16    <uses-permission android:name="android.permission.VIBRATE" />
+16-->G:\0 imports\apk\repo\apk_temp\app\src\main\AndroidManifest.xml:10:5-66
+16-->G:\0 imports\apk\repo\apk_temp\app\src\main\AndroidManifest.xml:10:22-63
+17    <uses-permission android:name="android.permission.USE_EXACT_ALARM" />
+17-->G:\0 imports\apk\repo\apk_temp\app\src\main\AndroidManifest.xml:11:5-74
+17-->G:\0 imports\apk\repo\apk_temp\app\src\main\AndroidManifest.xml:11:22-71
+18    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+18-->G:\0 imports\apk\repo\apk_temp\app\src\main\AndroidManifest.xml:12:5-79
+18-->G:\0 imports\apk\repo\apk_temp\app\src\main\AndroidManifest.xml:12:22-76
+19
+20    <permission
+20-->[androidx.core:core:1.13.1] G:\Android\.gradle\caches\8.10.2\transforms\e0dd89d155236d91594cf4c00da80943\transformed\core-1.13.1\AndroidManifest.xml:22:5-24:47
+21        android:name="com.quicktimer.app.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
+21-->[androidx.core:core:1.13.1] G:\Android\.gradle\caches\8.10.2\transforms\e0dd89d155236d91594cf4c00da80943\transformed\core-1.13.1\AndroidManifest.xml:23:9-81
+22        android:protectionLevel="signature" />
+22-->[androidx.core:core:1.13.1] G:\Android\.gradle\caches\8.10.2\transforms\e0dd89d155236d91594cf4c00da80943\transformed\core-1.13.1\AndroidManifest.xml:24:9-44
+23
+24    <uses-permission android:name="com.quicktimer.app.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION" />
+24-->[androidx.core:core:1.13.1] G:\Android\.gradle\caches\8.10.2\transforms\e0dd89d155236d91594cf4c00da80943\transformed\core-1.13.1\AndroidManifest.xml:26:5-97
+24-->[androidx.core:core:1.13.1] G:\Android\.gradle\caches\8.10.2\transforms\e0dd89d155236d91594cf4c00da80943\transformed\core-1.13.1\AndroidManifest.xml:26:22-94
+25
+26    <application
+26-->G:\0 imports\apk\repo\apk_temp\app\src\main\AndroidManifest.xml:14:5-63:19
+27        android:name="com.quicktimer.app.QuickTimerApp"
+27-->G:\0 imports\apk\repo\apk_temp\app\src\main\AndroidManifest.xml:15:9-38
+28        android:allowBackup="true"
+28-->G:\0 imports\apk\repo\apk_temp\app\src\main\AndroidManifest.xml:16:9-35
+29        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+29-->[androidx.core:core:1.13.1] G:\Android\.gradle\caches\8.10.2\transforms\e0dd89d155236d91594cf4c00da80943\transformed\core-1.13.1\AndroidManifest.xml:28:18-86
+30        android:debuggable="true"
+31        android:extractNativeLibs="false"
+32        android:icon="@android:drawable/ic_lock_idle_alarm"
+32-->G:\0 imports\apk\repo\apk_temp\app\src\main\AndroidManifest.xml:17:9-60
+33        android:label="@string/app_name"
+33-->G:\0 imports\apk\repo\apk_temp\app\src\main\AndroidManifest.xml:18:9-41
+34        android:roundIcon="@android:drawable/ic_lock_idle_alarm"
+34-->G:\0 imports\apk\repo\apk_temp\app\src\main\AndroidManifest.xml:19:9-65
+35        android:supportsRtl="true"
+35-->G:\0 imports\apk\repo\apk_temp\app\src\main\AndroidManifest.xml:20:9-35
+36        android:theme="@style/Theme.QuickTimer" >
+36-->G:\0 imports\apk\repo\apk_temp\app\src\main\AndroidManifest.xml:21:9-48
+37        <activity
+37-->G:\0 imports\apk\repo\apk_temp\app\src\main\AndroidManifest.xml:23:9-31:20
+38            android:name="com.quicktimer.app.ui.MainActivity"
+38-->G:\0 imports\apk\repo\apk_temp\app\src\main\AndroidManifest.xml:24:13-44
+39            android:exported="true"
+39-->G:\0 imports\apk\repo\apk_temp\app\src\main\AndroidManifest.xml:25:13-36
+40            android:theme="@style/Theme.QuickTimer" >
+40-->G:\0 imports\apk\repo\apk_temp\app\src\main\AndroidManifest.xml:26:13-52
+41            <intent-filter>
+41-->G:\0 imports\apk\repo\apk_temp\app\src\main\AndroidManifest.xml:27:13-30:29
+42                <action android:name="android.intent.action.MAIN" />
+42-->G:\0 imports\apk\repo\apk_temp\app\src\main\AndroidManifest.xml:28:17-69
+42-->G:\0 imports\apk\repo\apk_temp\app\src\main\AndroidManifest.xml:28:25-66
+43
+44                <category android:name="android.intent.category.LAUNCHER" />
+44-->G:\0 imports\apk\repo\apk_temp\app\src\main\AndroidManifest.xml:29:17-77
+44-->G:\0 imports\apk\repo\apk_temp\app\src\main\AndroidManifest.xml:29:27-74
+45            </intent-filter>
+46        </activity>
+47        <activity
+47-->G:\0 imports\apk\repo\apk_temp\app\src\main\AndroidManifest.xml:33:9-40:64
+48            android:name="com.quicktimer.app.ui.QuickTimerFloatingActivity"
+48-->G:\0 imports\apk\repo\apk_temp\app\src\main\AndroidManifest.xml:34:13-58
+49            android:excludeFromRecents="true"
+49-->G:\0 imports\apk\repo\apk_temp\app\src\main\AndroidManifest.xml:38:13-46
+50            android:exported="false"
+50-->G:\0 imports\apk\repo\apk_temp\app\src\main\AndroidManifest.xml:35:13-37
+51            android:launchMode="singleInstance"
+51-->G:\0 imports\apk\repo\apk_temp\app\src\main\AndroidManifest.xml:39:13-48
+52            android:showWhenLocked="true"
+52-->G:\0 imports\apk\repo\apk_temp\app\src\main\AndroidManifest.xml:36:13-42
+53            android:theme="@style/Theme.QuickTimer.Floating"
+53-->G:\0 imports\apk\repo\apk_temp\app\src\main\AndroidManifest.xml:40:13-61
+54            android:turnScreenOn="true" />
+54-->G:\0 imports\apk\repo\apk_temp\app\src\main\AndroidManifest.xml:37:13-40
+55
+56        <service
+56-->G:\0 imports\apk\repo\apk_temp\app\src\main\AndroidManifest.xml:42:9-52:19
+57            android:name="com.quicktimer.app.service.VolumeAccessibilityService"
+57-->G:\0 imports\apk\repo\apk_temp\app\src\main\AndroidManifest.xml:43:13-63
+58            android:exported="true"
+58-->G:\0 imports\apk\repo\apk_temp\app\src\main\AndroidManifest.xml:45:13-36
+59            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE" >
+59-->G:\0 imports\apk\repo\apk_temp\app\src\main\AndroidManifest.xml:44:13-79
+60            <intent-filter>
+60-->G:\0 imports\apk\repo\apk_temp\app\src\main\AndroidManifest.xml:46:13-48:29
+61                <action android:name="android.accessibilityservice.AccessibilityService" />
+61-->G:\0 imports\apk\repo\apk_temp\app\src\main\AndroidManifest.xml:47:17-92
+61-->G:\0 imports\apk\repo\apk_temp\app\src\main\AndroidManifest.xml:47:25-89
+62            </intent-filter>
+63
+64            <meta-data
+64-->G:\0 imports\apk\repo\apk_temp\app\src\main\AndroidManifest.xml:49:13-51:72
+65                android:name="android.accessibilityservice"
+65-->G:\0 imports\apk\repo\apk_temp\app\src\main\AndroidManifest.xml:50:17-60
+66                android:resource="@xml/accessibility_service_config" />
+66-->G:\0 imports\apk\repo\apk_temp\app\src\main\AndroidManifest.xml:51:17-69
+67        </service>
+68        <service
+68-->G:\0 imports\apk\repo\apk_temp\app\src\main\AndroidManifest.xml:54:9-61:19
+69            android:name="com.quicktimer.app.service.TimerForegroundService"
+69-->G:\0 imports\apk\repo\apk_temp\app\src\main\AndroidManifest.xml:55:13-59
+70            android:exported="false"
+70-->G:\0 imports\apk\repo\apk_temp\app\src\main\AndroidManifest.xml:56:13-37
+71            android:foregroundServiceType="specialUse" >
+71-->G:\0 imports\apk\repo\apk_temp\app\src\main\AndroidManifest.xml:57:13-55
+72            <property
+72-->G:\0 imports\apk\repo\apk_temp\app\src\main\AndroidManifest.xml:58:13-60:75
+73                android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
+73-->G:\0 imports\apk\repo\apk_temp\app\src\main\AndroidManifest.xml:59:17-76
+74                android:value="Temporizador de cuenta regresiva activa" />
+74-->G:\0 imports\apk\repo\apk_temp\app\src\main\AndroidManifest.xml:60:17-72
+75        </service>
+76
+77        <activity
+77-->[androidx.compose.ui:ui-tooling-android:1.7.4] G:\Android\.gradle\caches\8.10.2\transforms\10ca28645ded67276a41b8572dbc6982\transformed\ui-tooling-release\AndroidManifest.xml:23:9-25:39
+78            android:name="androidx.compose.ui.tooling.PreviewActivity"
+78-->[androidx.compose.ui:ui-tooling-android:1.7.4] G:\Android\.gradle\caches\8.10.2\transforms\10ca28645ded67276a41b8572dbc6982\transformed\ui-tooling-release\AndroidManifest.xml:24:13-71
+79            android:exported="true" />
+79-->[androidx.compose.ui:ui-tooling-android:1.7.4] G:\Android\.gradle\caches\8.10.2\transforms\10ca28645ded67276a41b8572dbc6982\transformed\ui-tooling-release\AndroidManifest.xml:25:13-36
+80        <activity
+80-->[androidx.compose.ui:ui-test-manifest:1.7.4] G:\Android\.gradle\caches\8.10.2\transforms\c5c66eb780e1edd3e42f5b48f731f90c\transformed\ui-test-manifest-1.7.4\AndroidManifest.xml:23:9-25:39
+81            android:name="androidx.activity.ComponentActivity"
+81-->[androidx.compose.ui:ui-test-manifest:1.7.4] G:\Android\.gradle\caches\8.10.2\transforms\c5c66eb780e1edd3e42f5b48f731f90c\transformed\ui-test-manifest-1.7.4\AndroidManifest.xml:24:13-63
+82            android:exported="true" />
+82-->[androidx.compose.ui:ui-test-manifest:1.7.4] G:\Android\.gradle\caches\8.10.2\transforms\c5c66eb780e1edd3e42f5b48f731f90c\transformed\ui-test-manifest-1.7.4\AndroidManifest.xml:25:13-36
+83
+84        <provider
+84-->[androidx.emoji2:emoji2:1.3.0] G:\Android\.gradle\caches\8.10.2\transforms\1aa74db5e6b7be46bd057df3dea2996c\transformed\emoji2-1.3.0\AndroidManifest.xml:24:9-32:20
+85            android:name="androidx.startup.InitializationProvider"
+85-->[androidx.emoji2:emoji2:1.3.0] G:\Android\.gradle\caches\8.10.2\transforms\1aa74db5e6b7be46bd057df3dea2996c\transformed\emoji2-1.3.0\AndroidManifest.xml:25:13-67
+86            android:authorities="com.quicktimer.app.androidx-startup"
+86-->[androidx.emoji2:emoji2:1.3.0] G:\Android\.gradle\caches\8.10.2\transforms\1aa74db5e6b7be46bd057df3dea2996c\transformed\emoji2-1.3.0\AndroidManifest.xml:26:13-68
+87            android:exported="false" >
+87-->[androidx.emoji2:emoji2:1.3.0] G:\Android\.gradle\caches\8.10.2\transforms\1aa74db5e6b7be46bd057df3dea2996c\transformed\emoji2-1.3.0\AndroidManifest.xml:27:13-37
+88            <meta-data
+88-->[androidx.emoji2:emoji2:1.3.0] G:\Android\.gradle\caches\8.10.2\transforms\1aa74db5e6b7be46bd057df3dea2996c\transformed\emoji2-1.3.0\AndroidManifest.xml:29:13-31:52
+89                android:name="androidx.emoji2.text.EmojiCompatInitializer"
+89-->[androidx.emoji2:emoji2:1.3.0] G:\Android\.gradle\caches\8.10.2\transforms\1aa74db5e6b7be46bd057df3dea2996c\transformed\emoji2-1.3.0\AndroidManifest.xml:30:17-75
+90                android:value="androidx.startup" />
+90-->[androidx.emoji2:emoji2:1.3.0] G:\Android\.gradle\caches\8.10.2\transforms\1aa74db5e6b7be46bd057df3dea2996c\transformed\emoji2-1.3.0\AndroidManifest.xml:31:17-49
+91            <meta-data
+91-->[androidx.lifecycle:lifecycle-process:2.8.7] G:\Android\.gradle\caches\8.10.2\transforms\08a72f8a6085d19cbf26796f9e98a3bc\transformed\lifecycle-process-2.8.7\AndroidManifest.xml:29:13-31:52
+92                android:name="androidx.lifecycle.ProcessLifecycleInitializer"
+92-->[androidx.lifecycle:lifecycle-process:2.8.7] G:\Android\.gradle\caches\8.10.2\transforms\08a72f8a6085d19cbf26796f9e98a3bc\transformed\lifecycle-process-2.8.7\AndroidManifest.xml:30:17-78
+93                android:value="androidx.startup" />
+93-->[androidx.lifecycle:lifecycle-process:2.8.7] G:\Android\.gradle\caches\8.10.2\transforms\08a72f8a6085d19cbf26796f9e98a3bc\transformed\lifecycle-process-2.8.7\AndroidManifest.xml:31:17-49
+94            <meta-data
+94-->[androidx.profileinstaller:profileinstaller:1.3.1] G:\Android\.gradle\caches\8.10.2\transforms\99d6b94ad54c429de55784c312937801\transformed\profileinstaller-1.3.1\AndroidManifest.xml:29:13-31:52
+95                android:name="androidx.profileinstaller.ProfileInstallerInitializer"
+95-->[androidx.profileinstaller:profileinstaller:1.3.1] G:\Android\.gradle\caches\8.10.2\transforms\99d6b94ad54c429de55784c312937801\transformed\profileinstaller-1.3.1\AndroidManifest.xml:30:17-85
+96                android:value="androidx.startup" />
+96-->[androidx.profileinstaller:profileinstaller:1.3.1] G:\Android\.gradle\caches\8.10.2\transforms\99d6b94ad54c429de55784c312937801\transformed\profileinstaller-1.3.1\AndroidManifest.xml:31:17-49
+97        </provider>
+98
+99        <service
+99-->[androidx.room:room-runtime:2.6.1] G:\Android\.gradle\caches\8.10.2\transforms\2cd9c8af2ee3ea5fa7a38733a78abfcb\transformed\room-runtime-2.6.1\AndroidManifest.xml:24:9-28:63
+100            android:name="androidx.room.MultiInstanceInvalidationService"
+100-->[androidx.room:room-runtime:2.6.1] G:\Android\.gradle\caches\8.10.2\transforms\2cd9c8af2ee3ea5fa7a38733a78abfcb\transformed\room-runtime-2.6.1\AndroidManifest.xml:25:13-74
+101            android:directBootAware="true"
+101-->[androidx.room:room-runtime:2.6.1] G:\Android\.gradle\caches\8.10.2\transforms\2cd9c8af2ee3ea5fa7a38733a78abfcb\transformed\room-runtime-2.6.1\AndroidManifest.xml:26:13-43
+102            android:exported="false" />
+102-->[androidx.room:room-runtime:2.6.1] G:\Android\.gradle\caches\8.10.2\transforms\2cd9c8af2ee3ea5fa7a38733a78abfcb\transformed\room-runtime-2.6.1\AndroidManifest.xml:27:13-37
+103
+104        <receiver
+104-->[androidx.profileinstaller:profileinstaller:1.3.1] G:\Android\.gradle\caches\8.10.2\transforms\99d6b94ad54c429de55784c312937801\transformed\profileinstaller-1.3.1\AndroidManifest.xml:34:9-52:20
+105            android:name="androidx.profileinstaller.ProfileInstallReceiver"
+105-->[androidx.profileinstaller:profileinstaller:1.3.1] G:\Android\.gradle\caches\8.10.2\transforms\99d6b94ad54c429de55784c312937801\transformed\profileinstaller-1.3.1\AndroidManifest.xml:35:13-76
+106            android:directBootAware="false"
+106-->[androidx.profileinstaller:profileinstaller:1.3.1] G:\Android\.gradle\caches\8.10.2\transforms\99d6b94ad54c429de55784c312937801\transformed\profileinstaller-1.3.1\AndroidManifest.xml:36:13-44
+107            android:enabled="true"
+107-->[androidx.profileinstaller:profileinstaller:1.3.1] G:\Android\.gradle\caches\8.10.2\transforms\99d6b94ad54c429de55784c312937801\transformed\profileinstaller-1.3.1\AndroidManifest.xml:37:13-35
+108            android:exported="true"
+108-->[androidx.profileinstaller:profileinstaller:1.3.1] G:\Android\.gradle\caches\8.10.2\transforms\99d6b94ad54c429de55784c312937801\transformed\profileinstaller-1.3.1\AndroidManifest.xml:38:13-36
+109            android:permission="android.permission.DUMP" >
+109-->[androidx.profileinstaller:profileinstaller:1.3.1] G:\Android\.gradle\caches\8.10.2\transforms\99d6b94ad54c429de55784c312937801\transformed\profileinstaller-1.3.1\AndroidManifest.xml:39:13-57
+110            <intent-filter>
+110-->[androidx.profileinstaller:profileinstaller:1.3.1] G:\Android\.gradle\caches\8.10.2\transforms\99d6b94ad54c429de55784c312937801\transformed\profileinstaller-1.3.1\AndroidManifest.xml:40:13-42:29
+111                <action android:name="androidx.profileinstaller.action.INSTALL_PROFILE" />
+111-->[androidx.profileinstaller:profileinstaller:1.3.1] G:\Android\.gradle\caches\8.10.2\transforms\99d6b94ad54c429de55784c312937801\transformed\profileinstaller-1.3.1\AndroidManifest.xml:41:17-91
+111-->[androidx.profileinstaller:profileinstaller:1.3.1] G:\Android\.gradle\caches\8.10.2\transforms\99d6b94ad54c429de55784c312937801\transformed\profileinstaller-1.3.1\AndroidManifest.xml:41:25-88
+112            </intent-filter>
+113            <intent-filter>
+113-->[androidx.profileinstaller:profileinstaller:1.3.1] G:\Android\.gradle\caches\8.10.2\transforms\99d6b94ad54c429de55784c312937801\transformed\profileinstaller-1.3.1\AndroidManifest.xml:43:13-45:29
+114                <action android:name="androidx.profileinstaller.action.SKIP_FILE" />
+114-->[androidx.profileinstaller:profileinstaller:1.3.1] G:\Android\.gradle\caches\8.10.2\transforms\99d6b94ad54c429de55784c312937801\transformed\profileinstaller-1.3.1\AndroidManifest.xml:44:17-85
+114-->[androidx.profileinstaller:profileinstaller:1.3.1] G:\Android\.gradle\caches\8.10.2\transforms\99d6b94ad54c429de55784c312937801\transformed\profileinstaller-1.3.1\AndroidManifest.xml:44:25-82
+115            </intent-filter>
+116            <intent-filter>
+116-->[androidx.profileinstaller:profileinstaller:1.3.1] G:\Android\.gradle\caches\8.10.2\transforms\99d6b94ad54c429de55784c312937801\transformed\profileinstaller-1.3.1\AndroidManifest.xml:46:13-48:29
+117                <action android:name="androidx.profileinstaller.action.SAVE_PROFILE" />
+117-->[androidx.profileinstaller:profileinstaller:1.3.1] G:\Android\.gradle\caches\8.10.2\transforms\99d6b94ad54c429de55784c312937801\transformed\profileinstaller-1.3.1\AndroidManifest.xml:47:17-88
+117-->[androidx.profileinstaller:profileinstaller:1.3.1] G:\Android\.gradle\caches\8.10.2\transforms\99d6b94ad54c429de55784c312937801\transformed\profileinstaller-1.3.1\AndroidManifest.xml:47:25-85
+118            </intent-filter>
+119            <intent-filter>
+119-->[androidx.profileinstaller:profileinstaller:1.3.1] G:\Android\.gradle\caches\8.10.2\transforms\99d6b94ad54c429de55784c312937801\transformed\profileinstaller-1.3.1\AndroidManifest.xml:49:13-51:29
+120                <action android:name="androidx.profileinstaller.action.BENCHMARK_OPERATION" />
+120-->[androidx.profileinstaller:profileinstaller:1.3.1] G:\Android\.gradle\caches\8.10.2\transforms\99d6b94ad54c429de55784c312937801\transformed\profileinstaller-1.3.1\AndroidManifest.xml:50:17-95
+120-->[androidx.profileinstaller:profileinstaller:1.3.1] G:\Android\.gradle\caches\8.10.2\transforms\99d6b94ad54c429de55784c312937801\transformed\profileinstaller-1.3.1\AndroidManifest.xml:50:25-92
+121            </intent-filter>
+122        </receiver>
+123    </application>
+124
+125</manifest>

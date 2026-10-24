@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">QuickTimer</string>
+    <string name="accessibility_service_description">Permite detectar la combinación de teclas de volumen para lanzar temporizadores de acceso rápido incluso con la pantalla bloqueada.</string>
+</resources>

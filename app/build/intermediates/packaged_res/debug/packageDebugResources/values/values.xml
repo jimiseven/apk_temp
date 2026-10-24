@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="dark_background">#121212</color>
+    <color name="dark_surface">#1E1E1E</color>
+    <color name="dark_surface_variant">#2A2A2A</color>
+    <color name="orange_accent">#FFA726</color>
+    <color name="orange_container">#3E2000</color>
+    <color name="orange_primary">#FF6F00</color>
+    <color name="orange_secondary">#FF9100</color>
+    <color name="text_primary">#FFFFFF</color>
+    <color name="text_secondary">#B0B0B0</color>
+    <string name="accessibility_service_description">Permite detectar la combinación de teclas de volumen para lanzar temporizadores de acceso rápido incluso con la pantalla bloqueada.</string>
+    <string name="app_name">QuickTimer</string>
+    <style name="Theme.QuickTimer" parent="android:Theme.Material.NoActionBar">
+        <item name="android:statusBarColor">#121212</item>
+        <item name="android:navigationBarColor">#121212</item>
+        <item name="android:windowBackground">#121212</item>
+    </style>
+    <style name="Theme.QuickTimer.Floating" parent="android:Theme.Material.NoActionBar">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:backgroundDimAmount">0.65</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+    </style>
+</resources>

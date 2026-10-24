@@ -1,0 +1,52 @@
+# Especificaciones Técnicas y Requisitos: App de Temporizador de Acceso Rápido
+
+## 1. Descripción General del Proyecto
+Aplicación móvil para Android que permite gestionar temporizadores personalizados y cuenta con un disparador global mediante una combinación específica de botones físicos de volumen. El objetivo principal es la rapidez y la accesibilidad, permitiendo activar un temporizador predeterminado incluso con el dispositivo bloqueado.
+
+## 2. Stack Tecnológico Sugerido
+- **Frontend / UI:** React Native (CLI recomendado) o Expo (con Development Builds / Expo Modules).
+- **Código Nativo (Android):** Kotlin / Java.
+- **Base de Datos Local:** SQLite, AsyncStorage o MMKV para guardar los temporizadores creados.
+
+## 3. Características de la Interfaz (Pantalla Principal)
+- **Gestión de Temporizadores (CRUD):** 
+  - Ver lista de temporizadores predeterminados (ej. 5 min, 10 min, etc.).
+  - Crear nuevos temporizadores.
+  - Editar temporizadores existentes.
+  - Eliminar temporizadores.
+- **Selección de Favoritos:** El sistema debe permitir identificar al menos 3 temporizadores principales/favoritos que serán los que aparezcan en el menú de acceso rápido.
+
+## 4. Funcionalidad Core: Acceso Rápido por Hardware
+- **Secuencia de Activación:** `Volumen -` , `Volumen +` , `Volumen -` , `Volumen -`.
+- **Comportamiento Global:** La secuencia debe ser detectada sin importar si el usuario está en otra aplicación, en la pantalla de inicio, o si el teléfono está con la pantalla apagada/bloqueada.
+- **Acción al detectar la secuencia:**
+  - El teléfono debe despertar (encender pantalla).
+  - Debe saltarse la pantalla de bloqueo temporalmente (usando flags nativos como `setShowWhenLocked(true)` y `setTurnScreenOn(true)`).
+  - Mostrar una pantalla flotante, modal o interfaz minimalista con los **3 temporizadores predeterminados**.
+  - Al seleccionar uno, inicia la cuenta regresiva automáticamente.
+
+## 5. Reglas de Negocio y Lógica
+- **Conflicto de Temporizadores:** Si un temporizador ya está corriendo y el usuario vuelve a ingresar la secuencia de botones para lanzar otro, **el temporizador actual se descarta/cancela** y se reemplaza por el nuevo seleccionado.
+- **Sonidos:** 
+  - Todo el sistema de sonido (al activar o al finalizar el tiempo) debe utilizar los sonidos por defecto del sistema operativo (Ringtone/Alarm predeterminados del dispositivo). 
+  - No se requieren archivos de audio personalizados.
+
+## 6. Requisitos Técnicos a Implementar (Para la IA generadora)
+- **AccessibilityService (Kotlin):** Obligatorio para escuchar globalmente los eventos de los botones de volumen (`KeyEvent.KEYCODE_VOLUME_DOWN` y `KEYCODE_VOLUME_UP`). Debe incluir un búfer de tiempo (ej. resetear la secuencia si pasan más de 2 segundos entre pulsaciones) para evitar activaciones accidentales.
+- **Foreground Service (Kotlin):** Obligatorio para ejecutar la cuenta regresiva del temporizador en segundo plano sin que el sistema operativo lo mate por ahorro de batería.
+- **React Native Bridge / Native Modules:** Para comunicar el evento de la secuencia de teclas detectada por el `AccessibilityService` hacia la capa de interfaz gráfica en React Native.
+- **Permisos de Android (AndroidManifest.xml):**
+  - `BIND_ACCESSIBILITY_SERVICE`
+  - `FOREGROUND_SERVICE`
+  - `USE_EXACT_ALARM` / `SCHEDULE_EXACT_ALARM` (para precisión del temporizador)
+  - `DISABLE_KEYGUARD` / `WAKE_LOCK` (para encender la pantalla).
+
+## 7. Plan de Generación Paso a Paso (Instrucción para la IA)
+1. **Paso 1:** Inicializar el proyecto React Native y configurar la estructura de la base de datos local para el CRUD.
+2. **Paso 2:** Crear la interfaz de la pantalla principal (lista, botones de crear/editar).
+3. **Paso 3:** Implementar el código nativo en Kotlin (AccessibilityService) y configurarlo en el AndroidManifest.
+4. **Paso 4:** Crear el puente (Bridge) entre Kotlin y React Native para pasar las señales.
+5. **Paso 5:** Implementar el Foreground Service y el menú modal que aparece sobre la pantalla de bloqueo.
+```eof
+
+Ahí tienes el archivo con todo el resumen de nuestras decisiones. Puedes copiar el texto directamente y enviárselo al servicio de IA que vas a usar para generar el código. ¡Espero que el desarrollo de la app sea todo un éxito! ¿Hay algo más en lo que pueda ayudarte con este proyecto?
