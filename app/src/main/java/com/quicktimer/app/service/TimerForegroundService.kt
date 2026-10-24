@@ -94,8 +94,10 @@ class TimerForegroundService : Service() {
         timerName = name
         isRunning = true
 
-        // Play start sound
-        SoundHelper.playStartSound(this)
+        // Play start sound asynchronously to keep UI completely unblocked
+        serviceScope.launch {
+            SoundHelper.playStartSound(applicationContext)
+        }
 
         val notification = buildOngoingNotification(remainingSeconds, timerName)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
@@ -119,6 +121,8 @@ class TimerForegroundService : Service() {
                 isRunning = false
                 SoundHelper.playEndSound(this@TimerForegroundService)
                 showFinishedNotification(timerName)
+                // Allow the 3-second completion tone to finish playing before stopping service
+                delay(3200)
                 stopSelf()
             }
         }

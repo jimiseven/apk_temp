@@ -1,4 +1,4 @@
-#Fri Oct 23 21:52:39 BOT 2026
+#Fri Oct 23 22:11:25 BOT 2026
 base.0=G\:\\0 imports\\apk\\repo\\apk_temp\\app\\build\\intermediates\\dex\\debug\\mergeExtDexDebug\\classes.dex
 base.1=G\:\\0 imports\\apk\\repo\\apk_temp\\app\\build\\intermediates\\dex\\debug\\mergeProjectDexDebug\\0\\classes.dex
 base.2=G\:\\0 imports\\apk\\repo\\apk_temp\\app\\build\\intermediates\\dex\\debug\\mergeProjectDexDebug\\10\\classes.dex

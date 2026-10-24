@@ -7,9 +7,6 @@ import android.os.Bundle
 import android.view.WindowManager
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.animation.core.Animatable
-import androidx.compose.animation.core.LinearEasing
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -30,20 +27,15 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Timer
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
@@ -55,10 +47,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.quicktimer.app.QuickTimerApp
+import com.quicktimer.app.data.TimerCache
 import com.quicktimer.app.data.TimerEntity
 import com.quicktimer.app.service.TimerForegroundService
-import com.quicktimer.app.ui.theme.DarkBackground
 import com.quicktimer.app.ui.theme.DarkSurface
 import com.quicktimer.app.ui.theme.DarkSurfaceVariant
 import com.quicktimer.app.ui.theme.OrangePrimary
@@ -75,30 +66,47 @@ class QuickTimerFloatingActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        // Disable window launch animations for instant rendering
+        window.attributes.windowAnimations = 0
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+            overrideActivityTransition(OVERRIDE_TRANSITION_OPEN, 0, 0)
+        } else {
+            @Suppress("DEPRECATION")
+            overridePendingTransition(0, 0)
+        }
+
         setupLockscreenFlags()
 
-        val repository = (application as QuickTimerApp).repository
+        // Read preloaded in-memory favorites immediately (0ms DB delay)
+        val favorites = TimerCache.favorites
 
         setContent {
             QuickTimerTheme {
-                val favoriteTimers by repository.favoriteTimers.collectAsState(initial = emptyList())
-
                 QuickTimerFloatingScreen(
-                    favorites = favoriteTimers,
+                    favorites = favorites,
                     onTimerSelected = { timer ->
-                        // Start service and finish immediately
                         TimerForegroundService.startTimer(
                             context = this@QuickTimerFloatingActivity,
                             seconds = timer.durationSeconds,
                             name = timer.name
                         )
-                        finish()
+                        closeInstantly()
                     },
                     onDismiss = {
-                        finish()
+                        closeInstantly()
                     }
                 )
             }
+        }
+    }
+
+    private fun closeInstantly() {
+        finish()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+            overrideActivityTransition(OVERRIDE_TRANSITION_CLOSE, 0, 0)
+        } else {
+            @Suppress("DEPRECATION")
+            overridePendingTransition(0, 0)
         }
     }
 
@@ -126,7 +134,6 @@ fun QuickTimerFloatingScreen(
     onTimerSelected: (TimerEntity) -> Unit,
     onDismiss: () -> Unit
 ) {
-    // 10-second auto-close countdown
     var secondsLeft by remember { mutableIntStateOf(10) }
 
     LaunchedEffect(Unit) {
@@ -137,7 +144,7 @@ fun QuickTimerFloatingScreen(
         onDismiss()
     }
 
-    // Semi-transparent scrim background
+    // Semi-transparent scrim
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -145,23 +152,22 @@ fun QuickTimerFloatingScreen(
             .clickable(onClick = onDismiss),
         contentAlignment = Alignment.Center
     ) {
-        // Floating Card
         Card(
             modifier = Modifier
                 .fillMaxWidth(0.92f)
-                .clickable(enabled = false) {} // Prevent click-through to dismiss
-                .border(1.5.dp, OrangePrimary.copy(alpha = 0.6f), RoundedCornerShape(24.dp)),
-            shape = RoundedCornerShape(24.dp),
+                .clickable(enabled = false) {}
+                .border(1.5.dp, OrangePrimary.copy(alpha = 0.6f), RoundedCornerShape(22.dp)),
+            shape = RoundedCornerShape(22.dp),
             colors = CardDefaults.cardColors(containerColor = DarkSurface),
-            elevation = CardDefaults.cardElevation(defaultElevation = 16.dp)
+            elevation = CardDefaults.cardElevation(defaultElevation = 12.dp)
         ) {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(20.dp),
+                    .padding(18.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                // Header with badge and close button
+                // Header
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically,
@@ -170,7 +176,7 @@ fun QuickTimerFloatingScreen(
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Box(
                             modifier = Modifier
-                                .size(36.dp)
+                                .size(34.dp)
                                 .clip(CircleShape)
                                 .background(OrangePrimaryContainer),
                             contentAlignment = Alignment.Center
@@ -179,28 +185,21 @@ fun QuickTimerFloatingScreen(
                                 imageVector = Icons.Default.Timer,
                                 contentDescription = null,
                                 tint = OrangePrimary,
-                                modifier = Modifier.size(20.dp)
+                                modifier = Modifier.size(18.dp)
                             )
                         }
                         Spacer(modifier = Modifier.width(10.dp))
-                        Column {
-                            Text(
-                                text = "Acceso Rápido",
-                                style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
-                                color = TextPrimary
-                            )
-                            Text(
-                                text = "Selecciona un temporizador",
-                                style = MaterialTheme.typography.bodySmall,
-                                color = TextSecondary
-                            )
-                        }
+                        Text(
+                            text = "Acceso Rápido",
+                            style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
+                            color = TextPrimary
+                        )
                     }
 
                     IconButton(
                         onClick = onDismiss,
                         modifier = Modifier
-                            .size(32.dp)
+                            .size(30.dp)
                             .clip(CircleShape)
                             .background(DarkSurfaceVariant)
                     ) {
@@ -208,58 +207,33 @@ fun QuickTimerFloatingScreen(
                             imageVector = Icons.Default.Close,
                             contentDescription = "Cerrar",
                             tint = TextSecondary,
-                            modifier = Modifier.size(18.dp)
+                            modifier = Modifier.size(16.dp)
                         )
                     }
                 }
 
-                Spacer(modifier = Modifier.height(18.dp))
+                Spacer(modifier = Modifier.height(14.dp))
 
-                // List of 3 Favorites
-                val displayList = if (favorites.isNotEmpty()) {
-                    favorites.take(3)
-                } else {
-                    listOf(
-                        TimerEntity(id = 1, name = "5 Minutos", durationSeconds = 300, isFavorite = true),
-                        TimerEntity(id = 2, name = "10 Minutos", durationSeconds = 600, isFavorite = true),
-                        TimerEntity(id = 3, name = "15 Minutos", durationSeconds = 900, isFavorite = true)
-                    )
-                }
-
-                displayList.forEachIndexed { index, timer ->
+                // Favorite items
+                favorites.take(3).forEachIndexed { index, timer ->
                     QuickTimerItemCard(
                         index = index + 1,
                         timer = timer,
                         onClick = { onTimerSelected(timer) }
                     )
-                    if (index < displayList.size - 1) {
-                        Spacer(modifier = Modifier.height(10.dp))
+                    if (index < favorites.take(3).size - 1) {
+                        Spacer(modifier = Modifier.height(8.dp))
                     }
                 }
 
-                Spacer(modifier = Modifier.height(20.dp))
+                Spacer(modifier = Modifier.height(14.dp))
 
-                // Auto-close progress bar and text
-                Column(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    LinearProgressIndicator(
-                        progress = { secondsLeft / 10f },
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(4.dp)
-                            .clip(RoundedCornerShape(2.dp)),
-                        color = OrangePrimary,
-                        trackColor = DarkSurfaceVariant
-                    )
-                    Spacer(modifier = Modifier.height(8.dp))
-                    Text(
-                        text = "Auto-cierre en ${secondsLeft}s",
-                        style = MaterialTheme.typography.labelSmall,
-                        color = TextMuted
-                    )
-                }
+                // Auto-close indicator
+                Text(
+                    text = "Auto-cierre en ${secondsLeft}s",
+                    style = MaterialTheme.typography.labelSmall,
+                    color = TextMuted
+                )
             }
         }
     }
@@ -274,24 +248,23 @@ fun QuickTimerItemCard(
     Surface(
         modifier = Modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(16.dp))
+            .clip(RoundedCornerShape(14.dp))
             .clickable(onClick = onClick)
-            .border(1.dp, OrangePrimary.copy(alpha = 0.25f), RoundedCornerShape(16.dp)),
+            .border(1.dp, OrangePrimary.copy(alpha = 0.25f), RoundedCornerShape(14.dp)),
         color = DarkSurfaceVariant,
-        shape = RoundedCornerShape(16.dp)
+        shape = RoundedCornerShape(14.dp)
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 16.dp, vertical = 14.dp),
+                .padding(horizontal = 14.dp, vertical = 12.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Row(verticalAlignment = Alignment.CenterVertically) {
-                // Number badge
                 Box(
                     modifier = Modifier
-                        .size(28.dp)
+                        .size(26.dp)
                         .clip(CircleShape)
                         .background(OrangePrimary.copy(alpha = 0.15f)),
                     contentAlignment = Alignment.Center
@@ -300,19 +273,19 @@ fun QuickTimerItemCard(
                         text = "$index",
                         color = OrangePrimary,
                         fontWeight = FontWeight.Bold,
-                        fontSize = 13.sp
+                        fontSize = 12.sp
                     )
                 }
-                Spacer(modifier = Modifier.width(12.dp))
+                Spacer(modifier = Modifier.width(10.dp))
                 Column {
                     Text(
                         text = timer.name,
-                        style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.SemiBold),
+                        style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.SemiBold),
                         color = TextPrimary
                     )
                     Text(
                         text = timer.formattedDuration,
-                        style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold),
+                        style = MaterialTheme.typography.bodySmall.copy(fontWeight = FontWeight.Bold),
                         color = OrangeSecondary
                     )
                 }
@@ -320,7 +293,7 @@ fun QuickTimerItemCard(
 
             Box(
                 modifier = Modifier
-                    .size(36.dp)
+                    .size(32.dp)
                     .clip(CircleShape)
                     .background(OrangePrimary),
                 contentAlignment = Alignment.Center
@@ -329,7 +302,7 @@ fun QuickTimerItemCard(
                     imageVector = Icons.Default.PlayArrow,
                     contentDescription = "Iniciar",
                     tint = Color.White,
-                    modifier = Modifier.size(22.dp)
+                    modifier = Modifier.size(18.dp)
                 )
             }
         }

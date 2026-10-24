@@ -2,10 +2,11 @@ package com.quicktimer.app.util
 
 import android.content.Context
 import android.media.AudioAttributes
+import android.media.MediaPlayer
 import android.media.Ringtone
 import android.media.RingtoneManager
+import android.net.Uri
 import android.os.Build
-import android.os.CombinedVibration
 import android.os.Handler
 import android.os.Looper
 import android.os.VibrationEffect
@@ -14,11 +15,15 @@ import android.os.VibratorManager
 
 object SoundHelper {
 
+    private fun getToneUri(): Uri {
+        return RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
+            ?: RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE)
+    }
+
     fun playStartSound(context: Context) {
         try {
-            val notificationUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
-                ?: RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE)
-            val ringtone: Ringtone? = RingtoneManager.getRingtone(context.applicationContext, notificationUri)
+            val toneUri = getToneUri()
+            val ringtone: Ringtone? = RingtoneManager.getRingtone(context.applicationContext, toneUri)
             ringtone?.let {
                 it.audioAttributes = AudioAttributes.Builder()
                     .setUsage(AudioAttributes.USAGE_ASSISTANCE_SONIFICATION)
@@ -26,37 +31,57 @@ object SoundHelper {
                     .build()
                 it.play()
             }
-            vibrateShort(context, 100)
+            vibrateShort(context, 80)
         } catch (e: Exception) {
             e.printStackTrace()
         }
     }
 
+    /**
+     * Plays the EXACT same tone as the start sound for 3 seconds continuously.
+     */
     fun playEndSound(context: Context) {
+        val appContext = context.applicationContext
         try {
-            // Prefer alarm sound, fallback to notification
-            val alertUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM)
-                ?: RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
-            val ringtone: Ringtone? = RingtoneManager.getRingtone(context.applicationContext, alertUri)
-            ringtone?.let {
-                it.audioAttributes = AudioAttributes.Builder()
-                    .setUsage(AudioAttributes.USAGE_ALARM)
-                    .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
-                    .build()
-                it.play()
+            val toneUri = getToneUri()
+            val player = MediaPlayer().apply {
+                setDataSource(appContext, toneUri)
+                setAudioAttributes(
+                    AudioAttributes.Builder()
+                        .setUsage(AudioAttributes.USAGE_ALARM)
+                        .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                        .build()
+                )
+                isLooping = true
+                prepare()
+                start()
+            }
 
-                // Short sound requirement: stop playback after 2.5 seconds if it's a long alarm melody
+            // Stop playback after exactly 3000ms (3 seconds)
+            Handler(Looper.getMainLooper()).postDelayed({
+                try {
+                    if (player.isPlaying) {
+                        player.stop()
+                    }
+                    player.release()
+                } catch (ignored: Exception) {}
+            }, 3000)
+
+            vibrateShort(appContext, 500)
+        } catch (e: Exception) {
+            // Fallback to Ringtone for 3 seconds
+            try {
+                val toneUri = getToneUri()
+                val ringtone = RingtoneManager.getRingtone(appContext, toneUri)
+                ringtone?.play()
                 Handler(Looper.getMainLooper()).postDelayed({
                     try {
-                        if (it.isPlaying) {
-                            it.stop()
+                        if (ringtone?.isPlaying == true) {
+                            ringtone.stop()
                         }
                     } catch (ignored: Exception) {}
-                }, 2500)
-            }
-            vibratePattern(context)
-        } catch (e: Exception) {
-            e.printStackTrace()
+                }, 3000)
+            } catch (ignored: Exception) {}
         }
     }
 
@@ -78,30 +103,6 @@ object SoundHelper {
                     @Suppress("DEPRECATION")
                     vibrator?.vibrate(milliseconds)
                 }
-            }
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-    }
-
-    private fun vibratePattern(context: Context) {
-        try {
-            val timings = longArrayOf(0, 250, 150, 250)
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                val effect = VibrationEffect.createWaveform(timings, -1)
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                    val vibratorManager = context.getSystemService(Context.VIBRATOR_MANAGER_SERVICE) as? VibratorManager
-                    vibratorManager?.defaultVibrator?.vibrate(effect)
-                } else {
-                    @Suppress("DEPRECATION")
-                    val vibrator = context.getSystemService(Context.VIBRATOR_SERVICE) as? Vibrator
-                    vibrator?.vibrate(effect)
-                }
-            } else {
-                @Suppress("DEPRECATION")
-                val vibrator = context.getSystemService(Context.VIBRATOR_SERVICE) as? Vibrator
-                @Suppress("DEPRECATION")
-                vibrator?.vibrate(timings, -1)
             }
         } catch (e: Exception) {
             e.printStackTrace()
