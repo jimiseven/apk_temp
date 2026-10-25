@@ -1,0 +1,177 @@
+================================================================================
+                    RESUMEN COMPLETO DEL PROYECTO: QUICKTIMER
+                App de Temporizador de Acceso Rápido por Hardware
+================================================================================
+
+1. DESCRIPCIÓN GENERAL
+--------------------------------------------------------------------------------
+Aplicación móvil Android desarrollada 100% en Android Nativo (Kotlin + Jetpack 
+Compose) diseñada para gestionar temporizadores personalizados y activarlos de 
+forma ultrarrápida mediante una combinación física de botones de volumen, 
+incluso cuando el dispositivo tiene la pantalla bloqueada o apagada.
+
+- Destino: Uso personal / Instalación directa (Sideloading APK).
+- Target SDK: Android 13/14 (API 33 - 34).
+- Estilo Visual: Tema Oscuro profundo con acentos Naranja fuego (Material 3).
+
+
+2. STACK TECNOLÓGICO Y ARQUITECTURA
+--------------------------------------------------------------------------------
+- Lenguaje: Kotlin 2.0.21.
+- Interfaz Gráfica: Jetpack Compose con Material Design 3.
+- Arquitectura: MVVM (Model-View-ViewModel) con Corrutinas y Flow.
+- Base de Datos Local: Room Database (SQLite) con procesador KSP.
+- Sistema de Construcción: Gradle 8.10.2 con Android Gradle Plugin (AGP) 8.7.2.
+- Componentes Nativos del Sistema Operativo:
+  * AccessibilityService (captura global de teclas físicas).
+  * ForegroundService (cuenta regresiva inmune a cierre por ahorro de batería).
+  * PowerManager & WakeLock (despertar CPU y encender pantalla físicamente).
+  * KeyguardManager & WindowManager Flags (superposición sobre pantalla bloqueada).
+  * RingtoneManager & MediaPlayer (reproducción de tonos predeterminados del sistema).
+
+
+3. FUNCIONALIDADES PRINCIPALES Y REGLAS DE NEGOCIO
+--------------------------------------------------------------------------------
+A) Disparador Global por Hardware (Pantalla Apagada o Bloqueada):
+   - Secuencia de activación: [Volumen -] -> [Volumen +] -> [Volumen -] -> [Volumen -]
+   - Ventana de tiempo (Búfer): Máximo 2.0 segundos entre pulsaciones. Si se 
+     excede el tiempo o se presiona una tecla incorrecta, el patrón se reinicia.
+   - Funcionamiento con pantalla apagada: Mantiene un Partial WakeLock de baja potencia 
+     para que la CPU no congele la lectura de hardware. Al detectar la secuencia 
+     completa, adquiere un WakeLock con ACQUIRE_CAUSES_WAKEUP para encender la 
+     pantalla físicamente.
+
+B) Ventana Flotante de Acceso Rápido (QuickTimerFloatingActivity):
+   - Se muestra instantáneamente por encima de la pantalla de bloqueo 
+     (setShowWhenLocked y setTurnScreenOn).
+   - Fondo semitransparente oscuro con tarjeta flotante centrada en tonos naranja.
+   - Muestra los 3 temporizadores favoritos del usuario con botones táctiles grandes.
+   - Auto-cierre en 10 segundos: Si se activa por error y no se toca la pantalla, 
+     se cierra automáticamente tras 10 segundos para no agotar la batería.
+   - Cierre inmediato: Al tocar uno de los temporizadores, la ventana se cierra 
+     al instante y el temporizador comienza a correr en segundo plano.
+
+C) Servicio en Primer Plano y Cuenta Regresiva (TimerForegroundService):
+   - Notificación persistente con tiempo restante (MM:SS) y botón de "Detener".
+   - Regla de conflicto: Si un temporizador está corriendo y se selecciona otro, 
+     el anterior se cancela inmediatamente y se sustituye por el nuevo.
+
+D) Sistema de Sonidos Nativo:
+   - Sin archivos de audio externos pesados; usa RingtoneManager del sistema.
+   - Sonido al Iniciar: Tono corto de notificación del sistema + vibración leve.
+   - Sonido al Finalizar: Utiliza EXACTAMENTE el mismo tono que se escucha al 
+     empezar, pero reproduciéndose en bucle continuo durante 3 segundos exactos 
+     y luego se detiene automáticamente.
+
+E) Pantalla Principal (CRUD y Configuración):
+   - Lista completa de temporizadores creados.
+   - Selector de Favoritos: Permite marcar hasta 3 favoritos para el acceso rápido.
+   - Diálogos para Crear, Editar y Eliminar temporizadores (minutos y segundos).
+   - Banner inteligente de Accesibilidad: Detecta en tiempo real si el servicio 
+     está activo. Si no lo está, ofrece un botón de acceso directo a Ajustes.
+   - Temporizadores precargados por defecto:
+     * 5 Minutos (Favorito 1)
+     * 10 Minutos (Favorito 2)
+     * 15 Minutos (Favorito 3)
+     * 25 Minutos (Pomodoro)
+     * 1 Minuto Express
+
+
+4. OPTIMIZACIONES DE RENDIMIENTO (APP RÁPIDA Y LIGERA - CERO LATENCIA)
+--------------------------------------------------------------------------------
+1. Caché en Memoria RAM (TimerCache.kt):
+   Se eliminó la espera asíncrona de consulta a Room SQLite en disco. Los 3 
+   temporizadores favoritos se mantienen precargados en memoria RAM, permitiendo 
+   que la ventana flotante aparezca dibujada en 0 milisegundos sin parpadeos.
+
+2. Supresión de Animaciones de Ventana del Sistema:
+   Se incorporaron las banderas FLAG_ACTIVITY_NO_ANIMATION y overridePendingTransition(0, 0).
+   La tarjeta flotante brota al instante al terminar la combinación de botones y se 
+   esfuma en el milisegundo en que se selecciona un temporizador.
+
+3. Audio Asíncrono no Bloqueante:
+   El disparo de audio se ejecuta en una corrutina en segundo plano para no bloquear 
+   el hilo principal de la interfaz de usuario.
+
+4. Persistencia Segura del Audio Final:
+   El servicio mantiene un retraso controlado de 3.2 segundos antes de cerrarse, 
+   garantizando que Android no mate el proceso antes de que los 3 segundos de 
+   sonido se escuchen de forma completa.
+
+
+5. ESTRUCTURA DE ARCHIVOS CREADOS EN EL REPOSITORIO
+--------------------------------------------------------------------------------
+g:\0 imports\apk\repo\apk_temp\
+│
+├── build.gradle.kts                          (Configuración raíz de Gradle)
+├── settings.gradle.kts                       (Módulos y repositorios)
+├── gradle.properties                         (Configuración JVM y AndroidX)
+├── local.properties                          (Ruta del SDK de Android)
+├── gradlew / gradlew.bat                     (Gradle Wrapper ejecutable)
+├── RESUMEN_PROYECTO.txt                      (Este archivo de resumen)
+│
+├── txts/
+│   ├── promnt info.txt                       (Especificación técnica original)
+│   └── resumen_del_proyecto.txt              (Copia del resumen en carpeta txts)
+│
+└── app/
+    ├── build.gradle.kts                      (Dependencias Compose, Room, KSP)
+    ├── proguard-rules.pro
+    └── src/main/
+        ├── AndroidManifest.xml               (Permisos, actividades y servicios)
+        │
+        ├── res/
+        │   ├── values/
+        │   │   ├── colors.xml                (Colores oscuros y naranja)
+        │   │   ├── strings.xml               (Strings de la app)
+        │   │   └── themes.xml                (Tema oscuro y ventana translúcida)
+        │   └── xml/
+        │       └── accessibility_service_config.xml (Filtro de teclas físicas)
+        │
+        └── java/com/quicktimer/app/
+            ├── QuickTimerApp.kt              (Clase Application, inicio de Room y sincronización de caché)
+            │
+            ├── data/
+            │   ├── TimerEntity.kt            (Entidad Room para los temporizadores)
+            │   ├── TimerDao.kt               (DAO para consultas e inserciones)
+            │   ├── TimerDatabase.kt          (Base de datos Room con pre-carga)
+            │   ├── TimerRepository.kt        (Lógica de negocio y límite de favoritos)
+            │   └── TimerCache.kt             (Caché en RAM para acceso instantáneo en 0 ms)
+            │
+            ├── service/
+            │   ├── VolumeAccessibilityService.kt (Detección de Vol-, Vol+, Vol-, Vol-)
+            │   └── TimerForegroundService.kt (Cuenta regresiva y notificaciones)
+            │
+            ├── util/
+            │   └── SoundHelper.kt            (Manejo de RingtoneManager y loop de 3s)
+            │
+            └── ui/
+                ├── MainActivity.kt           (Pantalla principal CRUD en Compose)
+                ├── MainViewModel.kt          (ViewModel y estado de accesibilidad)
+                ├── QuickTimerFloatingActivity.kt (Ventana flotante sobre bloqueo)
+                └── theme/
+                    ├── Color.kt              (Paleta de colores en Compose)
+                    └── Theme.kt              (Tema Material 3 Dark & Orange)
+
+
+6. UBICACIÓN DEL APK GENERADO
+--------------------------------------------------------------------------------
+El binario instalable compilado con éxito se encuentra en:
+G:\0 imports\apk\repo\apk_temp\app\build\outputs\apk\debug\app-debug.apk
+(Tamaño aproximado: ~16.5 MB)
+
+
+7. INSTRUCCIONES DE INSTALACIÓN Y CONFIGURACIÓN EN EL TELÉFONO
+--------------------------------------------------------------------------------
+1. Copiar el archivo "app-debug.apk" al teléfono móvil e instalarlo.
+2. Abrir la app QuickTimer por primera vez:
+   - Presionar el botón naranja "Activar en Ajustes de Accesibilidad".
+   - En la lista de servicios descargados de Android, activar "QuickTimer".
+3. Ajuste de batería recomendado (para garantizar captura con pantalla apagada):
+   - Ir a: Ajustes del Teléfono > Aplicaciones > QuickTimer > Batería.
+   - Cambiar a "Sin restricciones" (o "No optimizar").
+4. Uso:
+   - Bloquear el teléfono.
+   - Presionar la secuencia: [Volumen -], [Volumen +], [Volumen -], [Volumen -].
+   - La pantalla se encenderá y mostrará el menú flotante con los 3 favoritos.
+================================================================================
